@@ -1,0 +1,87 @@
+{
+  "title": "Heart Disease Prediction",
+  "classes": [
+    "absent",
+    "present"
+  ],
+  "features": {
+    "age": {
+      "type": "num",
+      "min": 29.0,
+      "max": 77.0,
+      "median": 55.0
+    },
+    "sex": {
+      "type": "num",
+      "min": 0.0,
+      "max": 1.0,
+      "median": 1.0
+    },
+    "chest": {
+      "type": "num",
+      "min": 1.0,
+      "max": 4.0,
+      "median": 3.0
+    },
+    "resting_blood_pressure": {
+      "type": "num",
+      "min": 94.0,
+      "max": 200.0,
+      "median": 130.0
+    },
+    "serum_cholestoral": {
+      "type": "num",
+      "min": 126.0,
+      "max": 564.0,
+      "median": 245.0
+    },
+    "fasting_blood_sugar": {
+      "type": "num",
+      "min": 0.0,
+      "max": 1.0,
+      "median": 0.0
+    },
+    "resting_electrocardiographic_results": {
+      "type": "num",
+      "min": 0.0,
+      "max": 2.0,
+      "median": 2.0
+    },
+    "maximum_heart_rate_achieved": {
+      "type": "num",
+      "min": 71.0,
+      "max": 202.0,
+      "median": 153.5
+    },
+    "exercise_induced_angina": {
+      "type": "num",
+      "min": 0.0,
+      "max": 1.0,
+      "median": 0.0
+    },
+    "oldpeak": {
+      "type": "num",
+      "min": 0.0,
+      "max": 6.2,
+      "median": 0.8
+    },
+    "slope": {
+      "type": "num",
+      "min": 1.0,
+      "max": 3.0,
+      "median": 2.0
+    },
+    "number_of_major_vessels": {
+      "type": "num",
+      "min": 0.0,
+      "max": 3.0,
+      "median": 0.0
+    },
+    "thal": {
+      "type": "num",
+      "min": 3.0,
+      "max": 7.0,
+      "median": 3.0
+    }
+  }
+}
