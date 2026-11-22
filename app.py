@@ -678,6 +678,19 @@ ECG_LINE = '<svg class="ecg-continuous" viewBox="0 0 260 52" preserveAspectRatio
 # -----------------------------------------------------------------------------
 # Data & Model Loading
 # -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# Scikit-learn backwards/forwards unpickling compatibility bridge
+# -----------------------------------------------------------------------------
+try:
+    import sklearn.compose._column_transformer as _ct
+    from collections import UserList
+    if not hasattr(_ct, "_RemainderColsList"):
+        class _RemainderColsList(UserList):
+            def __init__(self, columns=(), *args, **kwargs):
+                super().__init__(columns)
+        _ct._RemainderColsList = _RemainderColsList
+except Exception:
+    pass
 @st.cache_resource(show_spinner="Loading trained model...")
 def load_assets():
     """Load model.joblib + meta.json."""
