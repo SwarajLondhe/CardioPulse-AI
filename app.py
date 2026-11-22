@@ -187,13 +187,12 @@ h1, h2, h3, h4, .hero h1, .brand b, .sec {
 }
 
 /* =============================================================================
-   PROFESSIONAL CLINICAL DARK DESIGN SYSTEM (Universal High-Contrast Visibility)
+   ABSOLUTE BULLETPROOF DARK DESIGN SYSTEM (Kills ALL White Elements & Squares)
    ============================================================================= */
-:root, [data-theme="light"], .stApp, .stApp[data-theme="light"] {
+html, body, .stApp, .stApp[data-theme="light"], .stApp[data-theme="dark"] {
   color-scheme: dark !important;
   --bg: #070d1a !important;
-  --card: rgba(15, 23, 42, 0.92) !important;
-  --card-hover: rgba(22, 33, 58, 0.96) !important;
+  --card: rgba(15, 23, 42, 0.94) !important;
   --line: #223554 !important;
   --tx: #ffffff !important;
   --mut: #94a3b8 !important;
@@ -201,134 +200,149 @@ h1, h2, h3, h4, .hero h1, .brand b, .sec {
   color: #ffffff !important;
 }
 
-/* 1. Labels: Crisp, clean, readable text sitting cleanly above fields */
-label,
-[data-testid="stWidgetLabel"],
-[data-testid="stWidgetLabel"] p,
-[data-testid="stWidgetLabel"] span {
+/* 1. Labels: Clean, legible text sitting above fields */
+html body .stApp label,
+html body .stApp [data-testid="stWidgetLabel"],
+html body .stApp [data-testid="stWidgetLabel"] p,
+html body .stApp [data-testid="stWidgetLabel"] span {
   color: #e2e8f0 !important;
   font-weight: 600 !important;
   font-size: 0.92rem !important;
   border: none !important;
   background: transparent !important;
+  background-color: transparent !important;
 }
 
-/* 2. Top Example Selectboxes & All Dropdowns (FIXES THE WHITE BOX BUG) */
-[data-testid="stSelectbox"],
-[data-testid="stSelectbox"] *,
-div[data-baseweb="select"],
-div[data-baseweb="select"] *,
-div[data-baseweb="popover"],
-div[data-baseweb="popover"] *,
-ul[role="listbox"],
-ul[role="listbox"] *,
-li[role="option"],
-li[role="option"] * {
-  background-color: #111b2f !important;
+/* 2. Top Example Selectboxes & All Dropdowns (FIXES THE WHITE SQUARE ON ARROW) */
+html body .stApp [data-testid="stSelectbox"],
+html body .stApp [data-testid="stSelectbox"] *,
+html body .stApp div[data-baseweb="select"],
+html body .stApp div[data-baseweb="select"] *,
+html body .stApp div[data-baseweb="select"] div,
+html body .stApp div[data-baseweb="select"] span,
+html body .stApp div[data-baseweb="popover"],
+html body .stApp div[data-baseweb="popover"] *,
+html body .stApp ul[role="listbox"],
+html body .stApp ul[role="listbox"] *,
+html body .stApp li[role="option"],
+html body .stApp li[role="option"] * {
+  background: #0f172a !important;
+  background-color: #0f172a !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
-  border-color: #263c61 !important;
-  fill: #ffffff !important;
+  border-color: #334155 !important;
 }
 
-[data-testid="stSelectbox"] > div > div,
-div[data-baseweb="select"] > div {
-  background: #111b2f !important;
-  background-color: #111b2f !important;
-  border: 1.5px solid #263c61 !important;
-  border-radius: 10px !important;
+/* Kill the white square background on dropdown arrow / chevron icon */
+html body .stApp div[data-baseweb="select"] svg,
+html body .stApp div[data-baseweb="select"] [aria-hidden="true"],
+html body .stApp div[data-baseweb="select"] > div:last-child {
+  background: transparent !important;
+  background-color: transparent !important;
+  fill: #38bdf8 !important;
+  stroke: #38bdf8 !important;
+}
+
+html body .stApp [data-testid="stSelectbox"] > div > div,
+html body .stApp div[data-baseweb="select"] > div {
+  background: #0f172a !important;
+  background-color: #0f172a !important;
+  border: 1.5px solid #334155 !important;
+  border-radius: 8px !important;
   min-height: 44px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
 }
 
-[data-testid="stSelectbox"] > div > div:hover,
-div[data-baseweb="select"] > div:hover {
+html body .stApp [data-testid="stSelectbox"] > div > div:hover,
+html body .stApp div[data-baseweb="select"] > div:hover {
   border-color: #0ea5e9 !important;
 }
 
-/* 3. Number Input Containers (Visible, Elegant Slate Card Box) */
-div[data-testid="stNumberInput"] {
+/* 3. Number Input Containers & Boxes (NO WHITE RECTANGLES, SOLID DARK BOX) */
+html body .stApp div[data-testid="stNumberInput"] {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   padding: 0 !important;
-  margin-bottom: 0.6rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
-/* The actual rectangular input field */
-div[data-testid="stNumberInput"] div[data-baseweb="input"],
-div[data-testid="stNumberInput"] div[data-baseweb="base-input"] {
-  background: #111b2f !important;
-  background-color: #111b2f !important;
-  border: 1.5px solid #263c61 !important;
-  border-radius: 10px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+/* Force dark background on every part of the input box */
+html body .stApp div[data-testid="stNumberInput"] > div,
+html body .stApp div[data-testid="stNumberInput"] div[data-baseweb="input"],
+html body .stApp div[data-testid="stNumberInput"] div[data-baseweb="base-input"],
+html body .stApp div[data-baseweb="input"],
+html body .stApp div[data-baseweb="base-input"] {
+  background: #0f172a !important;
+  background-color: #0f172a !important;
+  border: 1.5px solid #334155 !important;
+  border-radius: 8px !important;
   overflow: hidden !important;
-  transition: border-color 0.2s, box-shadow 0.2s !important;
 }
 
-div[data-testid="stNumberInput"] div[data-baseweb="input"]:focus-within {
+html body .stApp div[data-testid="stNumberInput"] div[data-baseweb="input"]:focus-within {
   border-color: #0ea5e9 !important;
-  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.3) !important;
+  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.25) !important;
 }
 
-/* Crisp bold white number inside the box */
-div[data-testid="stNumberInput"] input,
-div[data-baseweb="input"] input,
-div[data-baseweb="base-input"] input,
-input[type="number"],
-input {
-  background: transparent !important;
-  background-color: transparent !important;
+/* Crisp high-contrast white number text inside input */
+html body .stApp input,
+html body .stApp input[type="number"],
+html body .stApp input[type="text"],
+html body .stApp div[data-testid="stNumberInput"] input,
+html body .stApp div[data-baseweb="input"] input,
+html body .stApp div[data-baseweb="base-input"] input {
+  background: #0f172a !important;
+  background-color: #0f172a !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   font-weight: 700 !important;
   font-size: 1.15rem !important;
-  padding: 0.5rem 0.85rem !important;
+  padding: 0.45rem 0.85rem !important;
   caret-color: #0ea5e9 !important;
   border: none !important;
 }
 
-/* 4. Sleek Stepper Buttons (- and +) integrated into the right side */
-div[data-testid="stNumberInput"] button,
-button[data-testid="stNumberInputStepDown"],
-button[data-testid="stNumberInputStepUp"] {
-  background: #182744 !important;
-  background-color: #182744 !important;
+/* 4. Stepper Buttons (- and +) integrated seamlessly */
+html body .stApp div[data-testid="stNumberInput"] button,
+html body .stApp button[data-testid="stNumberInputStepDown"],
+html body .stApp button[data-testid="stNumberInputStepUp"] {
+  background: #1e293b !important;
+  background-color: #1e293b !important;
   color: #38bdf8 !important;
   border: none !important;
-  border-left: 1px solid #263c61 !important;
-  width: 38px !important;
+  border-left: 1px solid #334155 !important;
+  width: 36px !important;
   font-size: 1.2rem !important;
   font-weight: 700 !important;
   transition: all 0.2s !important;
 }
 
-div[data-testid="stNumberInput"] button:hover {
+html body .stApp div[data-testid="stNumberInput"] button:hover {
   background: #0ea5e9 !important;
   background-color: #0ea5e9 !important;
   color: #ffffff !important;
 }
 
-/* 5. Radio buttons (Male / Female) */
-div[data-testid="stRadio"] {
+/* 5. Radio Buttons (Male / Female) */
+html body .stApp div[data-testid="stRadio"] {
   background: transparent !important;
 }
-div[data-testid="stRadio"] label,
-div[data-testid="stRadio"] div[role="radiogroup"] label {
+html body .stApp div[data-testid="stRadio"] label,
+html body .stApp div[data-testid="stRadio"] div[role="radiogroup"] label {
   background: transparent !important;
+  background-color: transparent !important;
   color: #ffffff !important;
   font-weight: 600 !important;
 }
-div[data-testid="stRadio"] label:hover {
+html body .stApp div[data-testid="stRadio"] label:hover {
   color: #38bdf8 !important;
 }
 
-/* 6. Tooltip Help Icons (?) - clean and non-overlapping */
-div[data-testid="stTooltipIcon"] {
+/* 6. Tooltip Help Icons (?) */
+html body .stApp div[data-testid="stTooltipIcon"] {
   opacity: 0.75;
 }
-div[data-testid="stTooltipIcon"] svg {
+html body .stApp div[data-testid="stTooltipIcon"] svg {
   fill: #94a3b8 !important;
 }
 
