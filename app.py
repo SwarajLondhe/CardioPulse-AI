@@ -186,15 +186,99 @@ h1, h2, h3, h4, .hero h1, .brand b, .sec {
   border-color: rgba(14, 165, 233, 0.5);
 }
 
-/* Glassmorphic Form & Controls */
-div[data-baseweb="input"], div[data-baseweb="select"] > div, div[data-baseweb="base-input"] {
+/* =============================================================================
+   UNIVERSAL DARK THEME ENFORCEMENT (Prevents White Boxes on Light-Theme Browsers)
+   ============================================================================= */
+/* Force dark palette across entire document and light-mode browsers */
+:root, [data-theme="light"], .stApp, .stApp[data-theme="light"] {
+  color-scheme: dark !important;
+  --bg: #060b16 !important;
+  --card: rgba(13, 22, 40, 0.85) !important;
+  --card-hover: rgba(18, 30, 54, 0.95) !important;
+  --line: rgba(148, 163, 184, 0.22) !important;
+  --tx: #f1f5f9 !important;
+  --mut: #94a3b8 !important;
+  background-color: #060b16 !important;
+  color: #f1f5f9 !important;
+}
+
+/* Number Inputs, Selectboxes, Text Inputs — 100% Solid Dark Glassmorphism */
+div[data-testid="stNumberInput"],
+div[data-testid="stNumberInput"] > div,
+div[data-testid="stNumberInput"] div[data-baseweb="input"],
+div[data-testid="stNumberInput"] div[data-baseweb="base-input"],
+div[data-testid="stSelectbox"],
+div[data-testid="stSelectbox"] > div,
+div[data-testid="stSelectbox"] div[data-baseweb="select"],
+div[data-baseweb="input"],
+div[data-baseweb="base-input"],
+div[data-baseweb="select"] > div {
   background: #0f1a30 !important;
-  border-color: var(--line) !important;
+  background-color: #0f1a30 !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
   border-radius: 12px !important;
+  color: #f1f5f9 !important;
 }
-input {
-  color: var(--tx) !important;
+
+/* Input text values & labels */
+div[data-testid="stNumberInput"] input,
+div[data-baseweb="base-input"] input,
+div[data-baseweb="input"] input,
+input,
+input:focus {
+  background: #0f1a30 !important;
+  background-color: #0f1a30 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 1.05rem !important;
+  caret-color: #38bdf8 !important;
 }
+
+/* Stepper +/- buttons inside number inputs */
+button[data-testid="stNumberInputStepDown"],
+button[data-testid="stNumberInputStepUp"],
+div[data-testid="stNumberInput"] button {
+  background: #172554 !important;
+  background-color: #172554 !important;
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+}
+
+button[data-testid="stNumberInputStepDown"]:hover,
+button[data-testid="stNumberInputStepUp"]:hover,
+div[data-testid="stNumberInput"] button:hover {
+  background: #1e3a8a !important;
+  background-color: #1e3a8a !important;
+  color: #ffffff !important;
+}
+
+/* Selectbox Dropdown Menus */
+div[data-baseweb="select"] span,
+div[data-baseweb="select"] div {
+  color: #f1f5f9 !important;
+}
+
+ul[data-baseweb="menu"],
+ul[data-baseweb="menu"] *,
+li[data-baseweb="menu-item"] {
+  background: #0b152d !important;
+  background-color: #0b152d !important;
+  color: #f1f5f9 !important;
+}
+
+li[data-baseweb="menu-item"]:hover {
+  background: #1e293b !important;
+  background-color: #1e293b !important;
+}
+
+/* Radio buttons (Male/Female) */
+div[data-testid="stRadio"] label,
+div[data-testid="stRadio"] div[role="radiogroup"] label {
+  background: transparent !important;
+  color: #f1f5f9 !important;
+}
+
 [data-testid="stForm"] {
   background: var(--card);
   border: 1px solid var(--line);
@@ -226,7 +310,7 @@ input {
 }
 [data-testid="stImage"] img {
   border-radius: 16px;
-  background: #fff;
+  background: transparent !important;
 }
 
 /* Keyframe Animations */
