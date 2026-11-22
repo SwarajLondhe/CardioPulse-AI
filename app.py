@@ -187,131 +187,149 @@ h1, h2, h3, h4, .hero h1, .brand b, .sec {
 }
 
 /* =============================================================================
-   PROFESSIONAL OBSIDIAN BLACK & WHITE CONTROLS (Zero Outer Squares / Pure Contrast)
+   PROFESSIONAL CLINICAL DARK DESIGN SYSTEM (Universal High-Contrast Visibility)
    ============================================================================= */
 :root, [data-theme="light"], .stApp, .stApp[data-theme="light"] {
   color-scheme: dark !important;
-  --bg: #050811 !important;
-  --card: rgba(10, 15, 28, 0.88) !important;
-  --card-hover: rgba(15, 23, 42, 0.96) !important;
-  --line: rgba(255, 255, 255, 0.12) !important;
+  --bg: #070d1a !important;
+  --card: rgba(15, 23, 42, 0.92) !important;
+  --card-hover: rgba(22, 33, 58, 0.96) !important;
+  --line: #223554 !important;
   --tx: #ffffff !important;
   --mut: #94a3b8 !important;
-  background-color: #050811 !important;
+  background-color: #070d1a !important;
   color: #ffffff !important;
 }
 
-/* 1. Remove ANY outer bounding box/frame over labels and inputs */
-div[data-testid="stNumberInput"],
-div[data-testid="stSelectbox"],
-div[data-testid="stTextInput"],
-div[data-testid="stNumberInputContainer"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  margin-bottom: 0.5rem !important;
-}
-
-/* Clean clinical labels sitting above the box with NO borders */
-div[data-testid="stNumberInput"] label,
-div[data-testid="stSelectbox"] label,
-div[data-testid="stTextInput"] label,
-div[data-testid="stNumberInput"] label p,
-div[data-testid="stSelectbox"] label p {
+/* 1. Labels: Crisp, clean, readable text sitting cleanly above fields */
+label,
+[data-testid="stWidgetLabel"],
+[data-testid="stWidgetLabel"] p,
+[data-testid="stWidgetLabel"] span {
   color: #e2e8f0 !important;
   font-weight: 600 !important;
-  font-size: 0.95rem !important;
+  font-size: 0.92rem !important;
   border: none !important;
-  outline: none !important;
   background: transparent !important;
 }
 
-/* 2. Obsidian Black Inner Box with Sleek Subtle Border */
-div[data-baseweb="input"],
-div[data-baseweb="base-input"],
+/* 2. Top Example Selectboxes & All Dropdowns (FIXES THE WHITE BOX BUG) */
+[data-testid="stSelectbox"],
+[data-testid="stSelectbox"] *,
+div[data-baseweb="select"],
+div[data-baseweb="select"] *,
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] *,
+ul[role="listbox"],
+ul[role="listbox"] *,
+li[role="option"],
+li[role="option"] * {
+  background-color: #111b2f !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: #263c61 !important;
+  fill: #ffffff !important;
+}
+
+[data-testid="stSelectbox"] > div > div,
 div[data-baseweb="select"] > div {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  background: #111b2f !important;
+  background-color: #111b2f !important;
+  border: 1.5px solid #263c61 !important;
   border-radius: 10px !important;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+  min-height: 44px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-testid="stSelectbox"] > div > div:hover,
+div[data-baseweb="select"] > div:hover {
+  border-color: #0ea5e9 !important;
+}
+
+/* 3. Number Input Containers (Visible, Elegant Slate Card Box) */
+div[data-testid="stNumberInput"] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-bottom: 0.6rem !important;
+}
+
+/* The actual rectangular input field */
+div[data-testid="stNumberInput"] div[data-baseweb="input"],
+div[data-testid="stNumberInput"] div[data-baseweb="base-input"] {
+  background: #111b2f !important;
+  background-color: #111b2f !important;
+  border: 1.5px solid #263c61 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  overflow: hidden !important;
   transition: border-color 0.2s, box-shadow 0.2s !important;
 }
 
-div[data-baseweb="input"]:focus-within,
-div[data-baseweb="select"] > div:focus-within {
-  border-color: #38bdf8 !important;
-  box-shadow: 0 0 0 1px #38bdf8, 0 0 12px rgba(56, 189, 248, 0.3) !important;
+div[data-testid="stNumberInput"] div[data-baseweb="input"]:focus-within {
+  border-color: #0ea5e9 !important;
+  box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.3) !important;
 }
 
-/* 3. Pure White High-Contrast Input Text */
+/* Crisp bold white number inside the box */
+div[data-testid="stNumberInput"] input,
 div[data-baseweb="input"] input,
 div[data-baseweb="base-input"] input,
+input[type="number"],
 input {
   background: transparent !important;
   background-color: transparent !important;
   color: #ffffff !important;
   -webkit-text-fill-color: #ffffff !important;
   font-weight: 700 !important;
-  font-size: 1.1rem !important;
-  padding-left: 0.75rem !important;
-  caret-color: #38bdf8 !important;
+  font-size: 1.15rem !important;
+  padding: 0.5rem 0.85rem !important;
+  caret-color: #0ea5e9 !important;
   border: none !important;
 }
 
-/* 4. Professional Stepper Buttons (- and +) */
-div[data-testid="stNumberInput"] button {
-  background: #0a0f1d !important;
-  background-color: #0a0f1d !important;
-  color: #ffffff !important;
+/* 4. Sleek Stepper Buttons (- and +) integrated into the right side */
+div[data-testid="stNumberInput"] button,
+button[data-testid="stNumberInputStepDown"],
+button[data-testid="stNumberInputStepUp"] {
+  background: #182744 !important;
+  background-color: #182744 !important;
+  color: #38bdf8 !important;
   border: none !important;
-  border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
-  border-radius: 0 !important;
-  transition: background 0.2s, color 0.2s !important;
-}
-
-div[data-testid="stNumberInput"] button:first-of-type {
-  border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-left: 1px solid #263c61 !important;
+  width: 38px !important;
+  font-size: 1.2rem !important;
+  font-weight: 700 !important;
+  transition: all 0.2s !important;
 }
 
 div[data-testid="stNumberInput"] button:hover {
-  background: #1e293b !important;
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
-}
-
-/* 5. Selectbox text and dropdown */
-div[data-baseweb="select"] span,
-div[data-baseweb="select"] div {
-  color: #ffffff !important;
-  font-weight: 600 !important;
-}
-
-ul[data-baseweb="menu"],
-ul[data-baseweb="menu"] *,
-li[data-baseweb="menu-item"],
-div[role="listbox"],
-div[role="listbox"] * {
-  background: #000000 !important;
-  background-color: #000000 !important;
+  background: #0ea5e9 !important;
+  background-color: #0ea5e9 !important;
   color: #ffffff !important;
 }
 
-li[data-baseweb="menu-item"]:hover {
-  background: #1e293b !important;
-  background-color: #1e293b !important;
-  color: #38bdf8 !important;
+/* 5. Radio buttons (Male / Female) */
+div[data-testid="stRadio"] {
+  background: transparent !important;
 }
-
-/* 6. Radio buttons (Male/Female) */
 div[data-testid="stRadio"] label,
 div[data-testid="stRadio"] div[role="radiogroup"] label {
   background: transparent !important;
   color: #ffffff !important;
   font-weight: 600 !important;
+}
+div[data-testid="stRadio"] label:hover {
+  color: #38bdf8 !important;
+}
+
+/* 6. Tooltip Help Icons (?) - clean and non-overlapping */
+div[data-testid="stTooltipIcon"] {
+  opacity: 0.75;
+}
+div[data-testid="stTooltipIcon"] svg {
+  fill: #94a3b8 !important;
 }
 
 [data-testid="stForm"] {
