@@ -676,9 +676,6 @@ ECG_LINE = '<svg class="ecg-continuous" viewBox="0 0 260 52" preserveAspectRatio
 
 
 # -----------------------------------------------------------------------------
-# Data & Model Loading
-# -----------------------------------------------------------------------------
-# -----------------------------------------------------------------------------
 # Scikit-learn backwards/forwards unpickling compatibility bridge
 # -----------------------------------------------------------------------------
 try:
@@ -691,11 +688,40 @@ try:
         _ct._RemainderColsList = _RemainderColsList
 except Exception:
     pass
+
+
+def patch_model_imputers(estimator):
+    """Recursively patches SimpleImputer and ColumnTransformer for cross-version compatibility."""
+    if estimator is None:
+        return
+    if hasattr(estimator, 'steps'):
+        for _, step in estimator.steps:
+            patch_model_imputers(step)
+    if hasattr(estimator, 'transformers_'):
+        for item in estimator.transformers_:
+            if len(item) >= 2:
+                patch_model_imputers(item[1])
+    if hasattr(estimator, 'named_transformers_'):
+        for _, trans in estimator.named_transformers_.items():
+            patch_model_imputers(trans)
+    if estimator.__class__.__name__ == 'SimpleImputer':
+        if not hasattr(estimator, '_fill_dtype'):
+            stat = getattr(estimator, 'statistics_', None)
+            if stat is not None and hasattr(stat, 'dtype'):
+                estimator._fill_dtype = stat.dtype
+            else:
+                estimator._fill_dtype = np.float64
+
+
+# -----------------------------------------------------------------------------
+# Data & Model Loading
+# -----------------------------------------------------------------------------
 @st.cache_resource(show_spinner="Loading trained model...")
 def load_assets():
     """Load model.joblib + meta.json."""
     try:
         model = joblib.load(BASE / "model.joblib")
+        patch_model_imputers(model)
         meta = json.loads((BASE / "meta.json").read_text(encoding="utf-8"))
         if not meta.get("features") or not meta.get("classes"):
             return None, None, "meta.json is missing 'features' or 'classes'."
@@ -718,12 +744,51 @@ def read_csv(name):
     return pd.read_csv(p) if p.exists() else None
 
 
+FALLBACK_SAMPLE_PATIENTS = pd.DataFrame([
+    {
+        "example_label": "Male - Lowest Risk (Dataset Example)",
+        "prob_present": 0.1725, "age": 34.0, "sex": 1.0, "chest": 1.0,
+        "resting_blood_pressure": 118.0, "serum_cholestoral": 182.0, "fasting_blood_sugar": 0.0,
+        "resting_electrocardiographic_results": 2.0, "maximum_heart_rate_achieved": 174.0,
+        "exercise_induced_angina": 0.0, "oldpeak": 0.0, "slope": 1.0,
+        "number_of_major_vessels": 0.0, "thal": 3.0
+    },
+    {
+        "example_label": "Female - Lowest Risk (Dataset Example)",
+        "prob_present": 0.1321, "age": 34.0, "sex": 0.0, "chest": 2.0,
+        "resting_blood_pressure": 118.0, "serum_cholestoral": 210.0, "fasting_blood_sugar": 0.0,
+        "resting_electrocardiographic_results": 0.0, "maximum_heart_rate_achieved": 192.0,
+        "exercise_induced_angina": 0.0, "oldpeak": 0.7, "slope": 1.0,
+        "number_of_major_vessels": 0.0, "thal": 3.0
+    },
+    {
+        "example_label": "Male - Highest Risk (Dataset Example)",
+        "prob_present": 0.9011, "age": 51.0, "sex": 1.0, "chest": 4.0,
+        "resting_blood_pressure": 140.0, "serum_cholestoral": 298.0, "fasting_blood_sugar": 0.0,
+        "resting_electrocardiographic_results": 0.0, "maximum_heart_rate_achieved": 122.0,
+        "exercise_induced_angina": 1.0, "oldpeak": 4.2, "slope": 2.0,
+        "number_of_major_vessels": 3.0, "thal": 7.0
+    },
+    {
+        "example_label": "Female - Highest Risk (Dataset Example)",
+        "prob_present": 0.8744, "age": 62.0, "sex": 0.0, "chest": 4.0,
+        "resting_blood_pressure": 160.0, "serum_cholestoral": 164.0, "fasting_blood_sugar": 0.0,
+        "resting_electrocardiographic_results": 2.0, "maximum_heart_rate_achieved": 145.0,
+        "exercise_induced_angina": 0.0, "oldpeak": 6.2, "slope": 3.0,
+        "number_of_major_vessels": 3.0, "thal": 7.0
+    }
+])
+
+
 @st.cache_data
 def load_sample_patients():
     p = BASE / "sample_patients.csv"
     if p.exists():
-        return pd.read_csv(p)
-    return None
+        try:
+            return pd.read_csv(p)
+        except Exception:
+            pass
+    return FALLBACK_SAMPLE_PATIENTS
 
 
 def stretch(fn, *args, **kw):
@@ -1099,19 +1164,33 @@ def build_inputs(prefix=""):
         with cols[i % 2]:
             lo, hi, med = float(info["min"]), float(info["max"]), float(info["median"])
             med = min(max(med, lo), hi)
-            whole = all(float(x).is_integer() for x in (lo, hi)) and (hi - lo) >= 1 and f != "oldpeak"
-            if whole:
-                def_val = int(st.session_state[key]) if key in st.session_state else int(round(med))
-                row[f] = st.number_input(
-                    pretty(f), min_value=int(lo), max_value=int(hi),
-                    value=def_val, step=1, key=key, help=HINTS.get(f)
+            if f == "sex":
+                cur_val = int(st.session_state.get(key, int(round(med))))
+                val_idx = 0 if cur_val == 1 else 1
+                sex_choice = st.radio(
+                    "Sex (Biological)",
+                    options=[1, 0],
+                    format_func=lambda x: "👨 Male" if x == 1 else "👩 Female",
+                    index=val_idx,
+                    key=key,
+                    horizontal=True,
+                    help=HINTS.get(f, "Biological sex: 1 = male, 0 = female")
                 )
+                row[f] = float(sex_choice)
             else:
-                def_val = float(st.session_state[key]) if key in st.session_state else med
-                row[f] = st.number_input(
-                    pretty(f), min_value=lo, max_value=hi,
-                    value=def_val, step=0.1, key=key, help=HINTS.get(f)
-                )
+                whole = all(float(x).is_integer() for x in (lo, hi)) and (hi - lo) >= 1 and f != "oldpeak"
+                if whole:
+                    def_val = int(st.session_state[key]) if key in st.session_state else int(round(med))
+                    row[f] = st.number_input(
+                        pretty(f), min_value=int(lo), max_value=int(hi),
+                        value=def_val, step=1, key=key, help=HINTS.get(f)
+                    )
+                else:
+                    def_val = float(st.session_state[key]) if key in st.session_state else med
+                    row[f] = st.number_input(
+                        pretty(f), min_value=lo, max_value=hi,
+                        value=def_val, step=0.1, key=key, help=HINTS.get(f)
+                    )
     return row
 
 
@@ -1128,6 +1207,7 @@ def validate(row):
 
 
 def predict(row):
+    patch_model_imputers(model)
     X = pd.DataFrame([[row[f] for f in FEATURES]], columns=FEATURES)
     proba = np.asarray(model.predict_proba(X)[0], dtype=float)
     if len(proba) != len(CLASSES):
